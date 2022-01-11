@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var inputNumber : Double?
+    var inputNumber : Double = 0
     var total : Double = 0.0
     
     enum Operation {
@@ -23,18 +23,21 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var inputTextField: UITextField!
     
-    @IBOutlet weak var outputLabel: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
     @IBAction func clear(_ sender: UIButton) {
-        inputNumber = 0
-        total = 0
-        inputTextField.text?.removeAll()
-        inputTextField.placeholder = "0.0"
-        
+        if(inputTextField.text!.isEmpty){
+            print("here")
+            inputNumber = 0
+            total = 0
+            inputTextField.text?.removeAll()
+            inputTextField.placeholder = "0.0"
+        }
+        else{
+            inputTextField.text?.removeAll()
+        }
     }
     @IBAction func add(_ sender: UIButton) {
         inputTextField.placeholder = ""
@@ -42,7 +45,6 @@ class ViewController: UIViewController {
         operationChosen = .addition
 
     }
-    
     @IBAction func subtract(_ sender: UIButton) {
         inputTextField.placeholder = ""
         calculate()
@@ -69,41 +71,84 @@ class ViewController: UIViewController {
         //inputTextField.text?.removeAll()
         
     }
-    func calculate(){
-        
-        storeInput(&inputNumber)
-        //print(inputNumber!)
-        guard let input1 = inputNumber else {
-            print("Invalid inputNumber")
-            return
-            
-        }
-
-        switch operationChosen {
-        case .addition:
-            total += input1
-        case .subtraction:
-            total -= input1
-        case .multiplication:
-            total *= input1
-        case .division:
-            total /= input1
-        case .start:
-            total = input1
-        }
-        inputTextField.text?.removeAll()
-        
+    @IBAction func one(_ sender: UIButton) {
+        inputTextField.insertText("1")
     }
-    func storeInput(_ inputNumber : inout Double?){
-    
-        guard let inputText = inputTextField.text else{
+    @IBAction func two(_ sender: UIButton) {
+        inputTextField.insertText("2")
+    }
+    @IBAction func three(_ sender: UIButton) {
+        inputTextField.insertText("3")
+    }
+    @IBAction func four(_ sender: UIButton) {
+        inputTextField.insertText("4")
+    }
+    @IBAction func five(_ sender: UIButton) {
+        inputTextField.insertText("5")
+    }
+    @IBAction func six(_ sender: UIButton) {
+        inputTextField.insertText("6")
+    }
+    @IBAction func seven(_ sender: UIButton) {
+        inputTextField.insertText("7")
+    }
+    @IBAction func eight(_ sender: UIButton) {
+        inputTextField.insertText("8")
+    }
+    @IBAction func nine(_ sender: UIButton) {
+        inputTextField.insertText("9")
+    }
+    @IBAction func zero(_ sender: UIButton) {
+        inputTextField.insertText("0")
+    }
+    @IBAction func negative(_ sender: UIButton) {
+        guard var digit = Double(inputTextField.text!) else{
             print("Invalid inputText")
             return
         }
+        digit *= -1
+        inputTextField.text = String(digit)
         
-        inputNumber = Double(inputText )
+    }
+    @IBAction func decimal(_ sender: UIButton) {
+        inputTextField.insertText(".")
+    }
+    
+ 
+    func storeInput(_ inputNumber : inout Double){
+        
+        var temp : Double
+        //? = Double(inputTextField.text!)
+
+        if let inputText = Double(inputTextField.text!){
+            print("unwrapped")
+            temp = inputText
+
+        }
+        else{
+            temp = total
+        }
+        inputNumber = temp
+        inputTextField.text?.removeAll()
+
+    }
+    
+    func calculate(){
+        storeInput(&inputNumber)
+
+        switch operationChosen {
+            case .addition:
+                total += inputNumber
+            case .subtraction:
+                total -= inputNumber
+            case .multiplication:
+                total *= inputNumber
+            case .division:
+                total /= inputNumber
+            case .start:
+                total = inputNumber
+        }
         inputTextField.text?.removeAll()
     }
-
 }
 
