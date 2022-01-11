@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     var inputNumber : Double?
-    var total : Double
+    var total : Double = 0.0
     
     enum Operation {
         case addition
@@ -30,74 +30,71 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func clear(_ sender: UIButton) {
-        inputNumber1 = 0
+        inputNumber = 0
         total = 0
         inputTextField.text?.removeAll()
-        outputLabel.text = "Answer"
+        inputTextField.placeholder = "0.0"
+        
     }
     @IBAction func add(_ sender: UIButton) {
+        inputTextField.placeholder = ""
         calculate()
         operationChosen = .addition
 
     }
     
     @IBAction func subtract(_ sender: UIButton) {
+        inputTextField.placeholder = ""
+        calculate()
         operationChosen = .subtraction
-        storeInput(inputNumber: &inputNumber1)
+        
     }
     @IBAction func multiply(_ sender: UIButton) {
+        inputTextField.placeholder = ""
+        calculate()
         operationChosen = .multiplication
-        storeInput(inputNumber: &inputNumber1)
     }
     @IBAction func divide(_ sender: UIButton) {
+        inputTextField.placeholder = ""
+        calculate()
         operationChosen = .division
-        storeInput(inputNumber: &inputNumber1)
+        
     }
     @IBAction func calculate(_ sender: UIButton) {
-        storeInput(inputNumber: &inputNumber2)
-        guard let input1 = inputNumber1 else {
-            print("Invalid inputNumber1")
-            return
-            
-        }
-        guard let input2 = inputNumber2 else {
-            print("Invalid inputNumber2")
-            return}
-        var answer : Double = 0
-        switch operationChosen {
-        case .addition:
-            answer = input1 + input2
-        case .subtraction:
-            answer = input1 - input2
-        case .multiplication:
-            answer = input1 * input2
-        case .division:
-            answer = input1 / input2
-        }
-        outputLabel.text = String(answer)
+        
+        calculate()
+        inputTextField.text?.removeAll()
+        inputTextField.placeholder = String(total)
+        operationChosen = .start
+        //inputTextField.text?.removeAll()
+        
     }
     func calculate(){
-        guard let input = inputNumber else {
+        
+        storeInput(&inputNumber)
+        //print(inputNumber!)
+        guard let input1 = inputNumber else {
             print("Invalid inputNumber")
             return
             
         }
+
         switch operationChosen {
-        case .start:
-            total = input
         case .addition:
-            total += input
+            total += input1
         case .subtraction:
-            total -= input
+            total -= input1
         case .multiplication:
-            total *= input
+            total *= input1
         case .division:
-            total /= input
+            total /= input1
+        case .start:
+            total = input1
         }
         inputTextField.text?.removeAll()
         
     }
-    func storeInput(inputNumber : inout Double?){
+    func storeInput(_ inputNumber : inout Double?){
     
         guard let inputText = inputTextField.text else{
             print("Invalid inputText")
